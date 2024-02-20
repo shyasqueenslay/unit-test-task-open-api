@@ -1,0 +1,982 @@
+openapi: 3.0.0
+info:
+  description: API to search for financial institutions with specific criteria using
+    Plaid.
+  title: Plaid Institutions Search API
+  version: 1.0.0
+servers:
+- description: Plaid server
+  url: https://sandbox.plaid.com
+paths:
+  /institutions/search:
+    post:
+      operationId: searchInstitutions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+          description: An array of institutions matching the search criteria.
+      summary: Search for financial institutions
+      x-eov-operation-handler: controllers/DefaultController
+components:
+  schemas:
+    SearchRequest:
+      example:
+        query: query
+        options:
+          include_optional_metadata: true
+          include_payment_initiation_metadata: false
+          oauth: true
+          payment_initiation:
+            payment_id: payment_id
+            consent_id: consent_id
+          include_auth_metadata: false
+        country_codes:
+        - US
+        - US
+        secret: secret
+        client_id: client_id
+        products:
+        - assets
+        - assets
+      properties:
+        client_id:
+          description: Your Plaid API client_id.
+          type: string
+        secret:
+          description: Your Plaid API secret.
+          type: string
+        query:
+          description: The search query. Institutions with names matching the query
+            are returned.
+          minLength: 1
+          type: string
+        products:
+          description: Filter the Institutions based on whether they support all listed
+            products.
+          items:
+            enum:
+            - assets
+            - auth
+            - balance
+            - employment
+            - identity
+            - income_verification
+            - investments
+            - liabilities
+            - identity_verification
+            - payment_initiation
+            - standing_orders
+            - transactions
+            - transfer
+            type: string
+          minItems: 1
+          type: array
+        country_codes:
+          description: Specify which country or countries to include institutions
+            from.
+          items:
+            enum:
+            - US
+            - GB
+            - ES
+            - NL
+            - FR
+            - IE
+            - CA
+            - DE
+            - IT
+            - PL
+            - DK
+            - "NO"
+            - SE
+            - EE
+            - LT
+            - LV
+            - PT
+            - BE
+            type: string
+          type: array
+        options:
+          $ref: '#/components/schemas/SearchRequest_options'
+      required:
+      - client_id
+      - country_codes
+      - query
+      - secret
+      type: object
+    SearchResponse:
+      example:
+        institutions:
+        - routing_numbers:
+          - routing_numbers
+          - routing_numbers
+          name: name
+          dtc_numbers:
+          - dtc_numbers
+          - dtc_numbers
+          country_codes:
+          - US
+          - US
+          logo: logo
+          primary_color: primary_color
+          oauth: true
+          url: url
+          institution_id: institution_id
+          products:
+          - assets
+          - assets
+          status:
+            investments_updates:
+              last_status_change: 2000-01-23T04:56:07.000+00:00
+              breakdown:
+                error_plaid: 6.027456183070403
+                refresh_interval: NORMAL
+                success: 0.8008281904610115
+                error_institution: 1.4658129805029452
+              status: HEALTHY
+            transaction_updates:
+              last_status_change: 2000-01-23T04:56:07.000+00:00
+              breakdown:
+                error_plaid: 6.027456183070403
+                refresh_interval: NORMAL
+                success: 0.8008281904610115
+                error_institution: 1.4658129805029452
+              status: HEALTHY
+            liabilities_updates:
+              last_status_change: 2000-01-23T04:56:07.000+00:00
+              breakdown:
+                error_plaid: 6.027456183070403
+                refresh_interval: NORMAL
+                success: 0.8008281904610115
+                error_institution: 1.4658129805029452
+              status: HEALTHY
+            auth:
+              last_status_change: 2000-01-23T04:56:07.000+00:00
+              breakdown:
+                error_plaid: 6.027456183070403
+                refresh_interval: NORMAL
+                success: 0.8008281904610115
+                error_institution: 1.4658129805029452
+              status: HEALTHY
+            identity:
+              last_status_change: 2000-01-23T04:56:07.000+00:00
+              breakdown:
+                error_plaid: 6.027456183070403
+                refresh_interval: NORMAL
+                success: 0.8008281904610115
+                error_institution: 1.4658129805029452
+              status: HEALTHY
+            liabilities:
+              last_status_change: 2000-01-23T04:56:07.000+00:00
+              breakdown:
+                error_plaid: 6.027456183070403
+                refresh_interval: NORMAL
+                success: 0.8008281904610115
+                error_institution: 1.4658129805029452
+              status: HEALTHY
+            auth_metadata:
+              supported_methods:
+                instant_match: true
+                automated_micro_deposits: true
+                instant_auth: true
+                instant_micro_deposits: true
+            item_logins:
+              last_status_change: 2000-01-23T04:56:07.000+00:00
+              breakdown:
+                error_plaid: 6.027456183070403
+                refresh_interval: NORMAL
+                success: 0.8008281904610115
+                error_institution: 1.4658129805029452
+              status: HEALTHY
+            health_incidents:
+            - end_date: 2000-01-23T04:56:07.000+00:00
+              incident_updates:
+              - description: description
+                updated_date: 2000-01-23T04:56:07.000+00:00
+                status: INVESTIGATING
+              - description: description
+                updated_date: 2000-01-23T04:56:07.000+00:00
+                status: INVESTIGATING
+              title: title
+              start_date: 2000-01-23T04:56:07.000+00:00
+            - end_date: 2000-01-23T04:56:07.000+00:00
+              incident_updates:
+              - description: description
+                updated_date: 2000-01-23T04:56:07.000+00:00
+                status: INVESTIGATING
+              - description: description
+                updated_date: 2000-01-23T04:56:07.000+00:00
+                status: INVESTIGATING
+              title: title
+              start_date: 2000-01-23T04:56:07.000+00:00
+            investments:
+              last_status_change: 2000-01-23T04:56:07.000+00:00
+              breakdown:
+                error_plaid: 6.027456183070403
+                refresh_interval: NORMAL
+                success: 0.8008281904610115
+                error_institution: 1.4658129805029452
+              status: HEALTHY
+            payment_initiation_metadata:
+              supports_refund_details: true
+              maximum_payment_amount:
+                key: maximum_payment_amount
+              standing_order_metadata:
+                supports_standing_order_negative_execution_days: true
+                supports_standing_order_end_date: true
+                valid_standing_order_intervals:
+                - WEEKLY
+                - WEEKLY
+              supports_sepa_instant: true
+              supports_international_payments: true
+        - routing_numbers:
+          - routing_numbers
+          - routing_numbers
+          name: name
+          dtc_numbers:
+          - dtc_numbers
+          - dtc_numbers
+          country_codes:
+          - US
+          - US
+          logo: logo
+          primary_color: primary_color
+          oauth: true
+          url: url
+          institution_id: institution_id
+          products:
+          - assets
+          - assets
+          status:
+            investments_updates:
+              last_status_change: 2000-01-23T04:56:07.000+00:00
+              breakdown:
+                error_plaid: 6.027456183070403
+                refresh_interval: NORMAL
+                success: 0.8008281904610115
+                error_institution: 1.4658129805029452
+              status: HEALTHY
+            transaction_updates:
+              last_status_change: 2000-01-23T04:56:07.000+00:00
+              breakdown:
+                error_plaid: 6.027456183070403
+                refresh_interval: NORMAL
+                success: 0.8008281904610115
+                error_institution: 1.4658129805029452
+              status: HEALTHY
+            liabilities_updates:
+              last_status_change: 2000-01-23T04:56:07.000+00:00
+              breakdown:
+                error_plaid: 6.027456183070403
+                refresh_interval: NORMAL
+                success: 0.8008281904610115
+                error_institution: 1.4658129805029452
+              status: HEALTHY
+            auth:
+              last_status_change: 2000-01-23T04:56:07.000+00:00
+              breakdown:
+                error_plaid: 6.027456183070403
+                refresh_interval: NORMAL
+                success: 0.8008281904610115
+                error_institution: 1.4658129805029452
+              status: HEALTHY
+            identity:
+              last_status_change: 2000-01-23T04:56:07.000+00:00
+              breakdown:
+                error_plaid: 6.027456183070403
+                refresh_interval: NORMAL
+                success: 0.8008281904610115
+                error_institution: 1.4658129805029452
+              status: HEALTHY
+            liabilities:
+              last_status_change: 2000-01-23T04:56:07.000+00:00
+              breakdown:
+                error_plaid: 6.027456183070403
+                refresh_interval: NORMAL
+                success: 0.8008281904610115
+                error_institution: 1.4658129805029452
+              status: HEALTHY
+            auth_metadata:
+              supported_methods:
+                instant_match: true
+                automated_micro_deposits: true
+                instant_auth: true
+                instant_micro_deposits: true
+            item_logins:
+              last_status_change: 2000-01-23T04:56:07.000+00:00
+              breakdown:
+                error_plaid: 6.027456183070403
+                refresh_interval: NORMAL
+                success: 0.8008281904610115
+                error_institution: 1.4658129805029452
+              status: HEALTHY
+            health_incidents:
+            - end_date: 2000-01-23T04:56:07.000+00:00
+              incident_updates:
+              - description: description
+                updated_date: 2000-01-23T04:56:07.000+00:00
+                status: INVESTIGATING
+              - description: description
+                updated_date: 2000-01-23T04:56:07.000+00:00
+                status: INVESTIGATING
+              title: title
+              start_date: 2000-01-23T04:56:07.000+00:00
+            - end_date: 2000-01-23T04:56:07.000+00:00
+              incident_updates:
+              - description: description
+                updated_date: 2000-01-23T04:56:07.000+00:00
+                status: INVESTIGATING
+              - description: description
+                updated_date: 2000-01-23T04:56:07.000+00:00
+                status: INVESTIGATING
+              title: title
+              start_date: 2000-01-23T04:56:07.000+00:00
+            investments:
+              last_status_change: 2000-01-23T04:56:07.000+00:00
+              breakdown:
+                error_plaid: 6.027456183070403
+                refresh_interval: NORMAL
+                success: 0.8008281904610115
+                error_institution: 1.4658129805029452
+              status: HEALTHY
+            payment_initiation_metadata:
+              supports_refund_details: true
+              maximum_payment_amount:
+                key: maximum_payment_amount
+              standing_order_metadata:
+                supports_standing_order_negative_execution_days: true
+                supports_standing_order_end_date: true
+                valid_standing_order_intervals:
+                - WEEKLY
+                - WEEKLY
+              supports_sepa_instant: true
+              supports_international_payments: true
+        request_id: request_id
+      properties:
+        institutions:
+          items:
+            $ref: '#/components/schemas/Institution'
+          type: array
+        request_id:
+          description: "A unique identifier for the request, which can be used for\
+            \ troubleshooting. This identifier, like all Plaid identifiers, is case\
+            \ sensitive."
+          type: string
+      type: object
+    Institution:
+      example:
+        routing_numbers:
+        - routing_numbers
+        - routing_numbers
+        name: name
+        dtc_numbers:
+        - dtc_numbers
+        - dtc_numbers
+        country_codes:
+        - US
+        - US
+        logo: logo
+        primary_color: primary_color
+        oauth: true
+        url: url
+        institution_id: institution_id
+        products:
+        - assets
+        - assets
+        status:
+          investments_updates:
+            last_status_change: 2000-01-23T04:56:07.000+00:00
+            breakdown:
+              error_plaid: 6.027456183070403
+              refresh_interval: NORMAL
+              success: 0.8008281904610115
+              error_institution: 1.4658129805029452
+            status: HEALTHY
+          transaction_updates:
+            last_status_change: 2000-01-23T04:56:07.000+00:00
+            breakdown:
+              error_plaid: 6.027456183070403
+              refresh_interval: NORMAL
+              success: 0.8008281904610115
+              error_institution: 1.4658129805029452
+            status: HEALTHY
+          liabilities_updates:
+            last_status_change: 2000-01-23T04:56:07.000+00:00
+            breakdown:
+              error_plaid: 6.027456183070403
+              refresh_interval: NORMAL
+              success: 0.8008281904610115
+              error_institution: 1.4658129805029452
+            status: HEALTHY
+          auth:
+            last_status_change: 2000-01-23T04:56:07.000+00:00
+            breakdown:
+              error_plaid: 6.027456183070403
+              refresh_interval: NORMAL
+              success: 0.8008281904610115
+              error_institution: 1.4658129805029452
+            status: HEALTHY
+          identity:
+            last_status_change: 2000-01-23T04:56:07.000+00:00
+            breakdown:
+              error_plaid: 6.027456183070403
+              refresh_interval: NORMAL
+              success: 0.8008281904610115
+              error_institution: 1.4658129805029452
+            status: HEALTHY
+          liabilities:
+            last_status_change: 2000-01-23T04:56:07.000+00:00
+            breakdown:
+              error_plaid: 6.027456183070403
+              refresh_interval: NORMAL
+              success: 0.8008281904610115
+              error_institution: 1.4658129805029452
+            status: HEALTHY
+          auth_metadata:
+            supported_methods:
+              instant_match: true
+              automated_micro_deposits: true
+              instant_auth: true
+              instant_micro_deposits: true
+          item_logins:
+            last_status_change: 2000-01-23T04:56:07.000+00:00
+            breakdown:
+              error_plaid: 6.027456183070403
+              refresh_interval: NORMAL
+              success: 0.8008281904610115
+              error_institution: 1.4658129805029452
+            status: HEALTHY
+          health_incidents:
+          - end_date: 2000-01-23T04:56:07.000+00:00
+            incident_updates:
+            - description: description
+              updated_date: 2000-01-23T04:56:07.000+00:00
+              status: INVESTIGATING
+            - description: description
+              updated_date: 2000-01-23T04:56:07.000+00:00
+              status: INVESTIGATING
+            title: title
+            start_date: 2000-01-23T04:56:07.000+00:00
+          - end_date: 2000-01-23T04:56:07.000+00:00
+            incident_updates:
+            - description: description
+              updated_date: 2000-01-23T04:56:07.000+00:00
+              status: INVESTIGATING
+            - description: description
+              updated_date: 2000-01-23T04:56:07.000+00:00
+              status: INVESTIGATING
+            title: title
+            start_date: 2000-01-23T04:56:07.000+00:00
+          investments:
+            last_status_change: 2000-01-23T04:56:07.000+00:00
+            breakdown:
+              error_plaid: 6.027456183070403
+              refresh_interval: NORMAL
+              success: 0.8008281904610115
+              error_institution: 1.4658129805029452
+            status: HEALTHY
+          payment_initiation_metadata:
+            supports_refund_details: true
+            maximum_payment_amount:
+              key: maximum_payment_amount
+            standing_order_metadata:
+              supports_standing_order_negative_execution_days: true
+              supports_standing_order_end_date: true
+              valid_standing_order_intervals:
+              - WEEKLY
+              - WEEKLY
+            supports_sepa_instant: true
+            supports_international_payments: true
+      properties:
+        institution_id:
+          description: Unique identifier for the institution.
+          type: string
+        name:
+          description: The official name of the institution.
+          type: string
+        products:
+          description: A list of the Plaid products supported by the institution.
+          items:
+            enum:
+            - assets
+            - auth
+            - balance
+            - employment
+            - identity
+            - income_verification
+            - investments
+            - liabilities
+            - identity_verification
+            - payment_initiation
+            - standing_orders
+            - transactions
+            - transfer
+            type: string
+          type: array
+        country_codes:
+          description: A list of the country codes supported by the institution.
+          items:
+            enum:
+            - US
+            - GB
+            - ES
+            - NL
+            - FR
+            - IE
+            - CA
+            - DE
+            - IT
+            - PL
+            - DK
+            - "NO"
+            - SE
+            - EE
+            - LT
+            - LV
+            - PT
+            - BE
+            type: string
+          type: array
+        url:
+          description: The URL for the institution's website.
+          nullable: true
+          type: string
+        primary_color:
+          description: Hexadecimal representation of the primary color used by the
+            institution.
+          nullable: true
+          type: string
+        logo:
+          description: Base64 encoded representation of the institution's logo.
+          nullable: true
+          type: string
+        routing_numbers:
+          description: A partial list of routing numbers associated with the institution.
+          items:
+            type: string
+          type: array
+        dtc_numbers:
+          description: A partial list of DTC numbers associated with the institution.
+          items:
+            type: string
+          type: array
+        oauth:
+          description: Indicates that the institution has an OAuth login flow.
+          type: boolean
+        status:
+          $ref: '#/components/schemas/InstitutionStatus'
+      type: object
+    InstitutionStatus:
+      example:
+        investments_updates:
+          last_status_change: 2000-01-23T04:56:07.000+00:00
+          breakdown:
+            error_plaid: 6.027456183070403
+            refresh_interval: NORMAL
+            success: 0.8008281904610115
+            error_institution: 1.4658129805029452
+          status: HEALTHY
+        transaction_updates:
+          last_status_change: 2000-01-23T04:56:07.000+00:00
+          breakdown:
+            error_plaid: 6.027456183070403
+            refresh_interval: NORMAL
+            success: 0.8008281904610115
+            error_institution: 1.4658129805029452
+          status: HEALTHY
+        liabilities_updates:
+          last_status_change: 2000-01-23T04:56:07.000+00:00
+          breakdown:
+            error_plaid: 6.027456183070403
+            refresh_interval: NORMAL
+            success: 0.8008281904610115
+            error_institution: 1.4658129805029452
+          status: HEALTHY
+        auth:
+          last_status_change: 2000-01-23T04:56:07.000+00:00
+          breakdown:
+            error_plaid: 6.027456183070403
+            refresh_interval: NORMAL
+            success: 0.8008281904610115
+            error_institution: 1.4658129805029452
+          status: HEALTHY
+        identity:
+          last_status_change: 2000-01-23T04:56:07.000+00:00
+          breakdown:
+            error_plaid: 6.027456183070403
+            refresh_interval: NORMAL
+            success: 0.8008281904610115
+            error_institution: 1.4658129805029452
+          status: HEALTHY
+        liabilities:
+          last_status_change: 2000-01-23T04:56:07.000+00:00
+          breakdown:
+            error_plaid: 6.027456183070403
+            refresh_interval: NORMAL
+            success: 0.8008281904610115
+            error_institution: 1.4658129805029452
+          status: HEALTHY
+        auth_metadata:
+          supported_methods:
+            instant_match: true
+            automated_micro_deposits: true
+            instant_auth: true
+            instant_micro_deposits: true
+        item_logins:
+          last_status_change: 2000-01-23T04:56:07.000+00:00
+          breakdown:
+            error_plaid: 6.027456183070403
+            refresh_interval: NORMAL
+            success: 0.8008281904610115
+            error_institution: 1.4658129805029452
+          status: HEALTHY
+        health_incidents:
+        - end_date: 2000-01-23T04:56:07.000+00:00
+          incident_updates:
+          - description: description
+            updated_date: 2000-01-23T04:56:07.000+00:00
+            status: INVESTIGATING
+          - description: description
+            updated_date: 2000-01-23T04:56:07.000+00:00
+            status: INVESTIGATING
+          title: title
+          start_date: 2000-01-23T04:56:07.000+00:00
+        - end_date: 2000-01-23T04:56:07.000+00:00
+          incident_updates:
+          - description: description
+            updated_date: 2000-01-23T04:56:07.000+00:00
+            status: INVESTIGATING
+          - description: description
+            updated_date: 2000-01-23T04:56:07.000+00:00
+            status: INVESTIGATING
+          title: title
+          start_date: 2000-01-23T04:56:07.000+00:00
+        investments:
+          last_status_change: 2000-01-23T04:56:07.000+00:00
+          breakdown:
+            error_plaid: 6.027456183070403
+            refresh_interval: NORMAL
+            success: 0.8008281904610115
+            error_institution: 1.4658129805029452
+          status: HEALTHY
+        payment_initiation_metadata:
+          supports_refund_details: true
+          maximum_payment_amount:
+            key: maximum_payment_amount
+          standing_order_metadata:
+            supports_standing_order_negative_execution_days: true
+            supports_standing_order_end_date: true
+            valid_standing_order_intervals:
+            - WEEKLY
+            - WEEKLY
+          supports_sepa_instant: true
+          supports_international_payments: true
+      nullable: true
+      properties:
+        item_logins:
+          $ref: '#/components/schemas/UpdateEntity'
+        transaction_updates:
+          $ref: '#/components/schemas/UpdateEntity'
+        auth:
+          $ref: '#/components/schemas/UpdateEntity'
+        identity:
+          $ref: '#/components/schemas/UpdateEntity'
+        investments_updates:
+          $ref: '#/components/schemas/UpdateEntity'
+        liabilities_updates:
+          $ref: '#/components/schemas/UpdateEntity'
+        liabilities:
+          $ref: '#/components/schemas/UpdateEntity'
+        investments:
+          $ref: '#/components/schemas/UpdateEntity'
+        health_incidents:
+          description: Details of recent health incidents associated with the institution.
+          items:
+            $ref: '#/components/schemas/HealthIncident'
+          nullable: true
+          type: array
+        payment_initiation_metadata:
+          $ref: '#/components/schemas/PaymentInitiationMetadata'
+        auth_metadata:
+          $ref: '#/components/schemas/AuthMetadata'
+      type: object
+    Breakdown:
+      description: "A detailed breakdown of the institution's performance for a request\
+        \ type. The values for success, error_plaid, and error_institution sum to\
+        \ 1. The time range used for calculating the breakdown may range from the\
+        \ most recent few minutes to the past six hours. In general, smaller institutions\
+        \ will show status that was calculated over a longer period of time. For Investment\
+        \ updates, which are refreshed less frequently, the period assessed may be\
+        \ 24 hours or more."
+      example:
+        error_plaid: 6.027456183070403
+        refresh_interval: NORMAL
+        success: 0.8008281904610115
+        error_institution: 1.4658129805029452
+      properties:
+        success:
+          description: "The percentage of login attempts that are successful, expressed\
+            \ as a decimal."
+          format: double
+          type: number
+        error_plaid:
+          description: "The percentage of logins that are failing due to an internal\
+            \ Plaid issue, expressed as a decimal."
+          format: double
+          type: number
+        error_institution:
+          description: "The percentage of logins that are failing due to an issue\
+            \ in the institution's system, expressed as a decimal."
+          format: double
+          type: number
+        refresh_interval:
+          description: The refresh_interval may be DELAYED or STOPPED even when the
+            success rate is high. This value is only returned for Transactions status
+            breakdowns.
+          enum:
+          - NORMAL
+          - DELAYED
+          - STOPPED
+          type: string
+      type: object
+    UpdateEntity:
+      example:
+        last_status_change: 2000-01-23T04:56:07.000+00:00
+        breakdown:
+          error_plaid: 6.027456183070403
+          refresh_interval: NORMAL
+          success: 0.8008281904610115
+          error_institution: 1.4658129805029452
+        status: HEALTHY
+      properties:
+        status:
+          deprecated: true
+          description: "This field is deprecated in favor of the breakdown object,\
+            \ which provides more granular institution health data."
+          enum:
+          - HEALTHY
+          - DEGRADED
+          - DOWN
+          type: string
+        last_status_change:
+          description: ISO 8601 formatted timestamp of the last status change for
+            the institution.
+          format: date-time
+          type: string
+        breakdown:
+          $ref: '#/components/schemas/Breakdown'
+      type: object
+    HealthIncidents:
+      description: Details of recent health incidents associated with the institution.
+      items:
+        $ref: '#/components/schemas/HealthIncident'
+      nullable: true
+      type: array
+    HealthIncident:
+      example:
+        end_date: 2000-01-23T04:56:07.000+00:00
+        incident_updates:
+        - description: description
+          updated_date: 2000-01-23T04:56:07.000+00:00
+          status: INVESTIGATING
+        - description: description
+          updated_date: 2000-01-23T04:56:07.000+00:00
+          status: INVESTIGATING
+        title: title
+        start_date: 2000-01-23T04:56:07.000+00:00
+      properties:
+        start_date:
+          description: "The start date of the incident, in ISO 8601 format."
+          format: date-time
+          type: string
+        end_date:
+          description: "The end date of the incident, in ISO 8601 format."
+          format: date-time
+          nullable: true
+          type: string
+        title:
+          description: The title of the incident.
+          type: string
+        incident_updates:
+          items:
+            $ref: '#/components/schemas/IncidentUpdate'
+          type: array
+      type: object
+    IncidentUpdate:
+      example:
+        description: description
+        updated_date: 2000-01-23T04:56:07.000+00:00
+        status: INVESTIGATING
+      properties:
+        description:
+          description: The content of the update.
+          type: string
+        status:
+          description: The status of the incident.
+          enum:
+          - INVESTIGATING
+          - IDENTIFIED
+          - SCHEDULED
+          - RESOLVED
+          - UNKNOWN
+          type: string
+        updated_date:
+          description: "The date when the update was published, in ISO 8601 format."
+          format: date-time
+          type: string
+      type: object
+    PaymentInitiationMetadata:
+      description: Metadata that captures what specific payment configurations an
+        institution supports when making Payment Initiation requests.
+      example:
+        supports_refund_details: true
+        maximum_payment_amount:
+          key: maximum_payment_amount
+        standing_order_metadata:
+          supports_standing_order_negative_execution_days: true
+          supports_standing_order_end_date: true
+          valid_standing_order_intervals:
+          - WEEKLY
+          - WEEKLY
+        supports_sepa_instant: true
+        supports_international_payments: true
+      nullable: true
+      properties:
+        supports_international_payments:
+          description: Indicates whether the institution supports payments from a
+            different country.
+          type: boolean
+        supports_sepa_instant:
+          description: Indicates whether the institution supports SEPA Instant payments.
+          type: boolean
+        maximum_payment_amount:
+          additionalProperties:
+            type: string
+          description: "A mapping of currency to maximum payment amount supported\
+            \ by the institution, denominated in the smallest unit of currency."
+          type: object
+        supports_refund_details:
+          description: Indicates whether the institution supports returning refund
+            details when initiating a payment.
+          type: boolean
+        standing_order_metadata:
+          $ref: '#/components/schemas/StandingOrderMetadata'
+      type: object
+    StandingOrderMetadata:
+      description: Metadata specifically related to valid Payment Initiation standing
+        order configurations for the institution.
+      example:
+        supports_standing_order_negative_execution_days: true
+        supports_standing_order_end_date: true
+        valid_standing_order_intervals:
+        - WEEKLY
+        - WEEKLY
+      nullable: true
+      properties:
+        supports_standing_order_end_date:
+          description: Indicates whether the institution supports closed-ended standing
+            orders by providing an end date.
+          type: boolean
+        supports_standing_order_negative_execution_days:
+          description: This is only applicable to MONTHLY standing orders. Indicates
+            whether the institution supports negative integers (-1 to -5) for setting
+            up a MONTHLY standing order relative to the end of the month.
+          type: boolean
+        valid_standing_order_intervals:
+          description: A list of the valid standing order intervals supported by the
+            institution. Min length - 1.
+          items:
+            enum:
+            - WEEKLY
+            - MONTHLY
+            type: string
+          type: array
+      type: object
+    AuthMetadata:
+      description: Metadata that captures information about the Auth features of an
+        institution.
+      example:
+        supported_methods:
+          instant_match: true
+          automated_micro_deposits: true
+          instant_auth: true
+          instant_micro_deposits: true
+      nullable: true
+      properties:
+        supported_methods:
+          $ref: '#/components/schemas/SupportedMethods'
+      type: object
+    SupportedMethods:
+      description: Metadata specifically related to which auth methods an institution
+        supports.
+      example:
+        instant_match: true
+        automated_micro_deposits: true
+        instant_auth: true
+        instant_micro_deposits: true
+      nullable: true
+      properties:
+        instant_auth:
+          description: Indicates if instant auth is supported.
+          type: boolean
+        instant_match:
+          description: Indicates if instant match is supported.
+          type: boolean
+        automated_micro_deposits:
+          description: Indicates if automated microdeposits are supported.
+          type: boolean
+        instant_micro_deposits:
+          description: Indicates if instant microdeposits are supported.
+          type: boolean
+      type: object
+    SearchRequest_options_payment_initiation:
+      example:
+        payment_id: payment_id
+        consent_id: consent_id
+      properties:
+        payment_id:
+          description: A unique ID identifying the payment.
+          type: string
+        consent_id:
+          description: A unique ID identifying the payment consent.
+          type: string
+      type: object
+    SearchRequest_options:
+      example:
+        include_optional_metadata: true
+        include_payment_initiation_metadata: false
+        oauth: true
+        payment_initiation:
+          payment_id: payment_id
+          consent_id: consent_id
+        include_auth_metadata: false
+      properties:
+        oauth:
+          description: Limit results to institutions with or without OAuth login flows.
+          type: boolean
+        include_optional_metadata:
+          description: "When true, return the institution's homepage URL, logo, and\
+            \ primary brand color."
+          type: boolean
+        include_auth_metadata:
+          default: false
+          description: "When true, returns metadata related to the Auth product indicating\
+            \ which auth methods are supported."
+          type: boolean
+        include_payment_initiation_metadata:
+          default: false
+          description: "When true, returns metadata related to the Payment Initiation\
+            \ product indicating which payment configurations are supported."
+          type: boolean
+        payment_initiation:
+          $ref: '#/components/schemas/SearchRequest_options_payment_initiation'
+      type: object
